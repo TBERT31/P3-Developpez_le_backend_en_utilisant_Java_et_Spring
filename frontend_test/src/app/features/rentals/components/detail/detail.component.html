@@ -1,0 +1,59 @@
+<div class="detail">
+    <mat-card *ngIf="rental">
+        <mat-card-title>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <button mat-icon-button (click)="back()">
+                        <mat-icon>arrow_back</mat-icon>
+                    </button>
+                    <h1>{{rental.name | titlecase}}</h1>
+                </div>
+            </div>
+            <mat-card-subtitle class="owner">
+                <app-owner-info [ownerId]="rental.owner_id"></app-owner-info>
+            </mat-card-subtitle>
+        </mat-card-title>
+        <mat-card-content>
+            <div fxLayout="column" fxLayoutAlign="start center">
+                <img class="fit" [src]="rental.picture" alt="house picture">
+            </div>
+            <div class="my2" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxLayout="center">
+                    <mat-icon>
+                        straighten
+                    </mat-icon>
+                    <span class="ml1">{{ rental.surface}} m2</span>
+                </div>
+                <div fxLayout="center">
+                    <mat-icon>
+                        nights_stay
+                    </mat-icon>
+                    <span class="ml1">{{ rental.price | currency:'EUR':'symbol':'.2-2'}} / by night</span>
+                </div>
+            </div>
+            <div class="description">
+                <p>Description:</p>
+                {{ rental.description }}
+            </div>
+            <div class="date" class="my2" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="created"><i>Create at: </i> {{ rental.created_at| date: 'longDate'}}</div>
+                <div class="updated"><i>Last update: </i> {{ rental.updated_at| date: 'longDate'}}</div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="mt2">
+        <mat-card-title>
+            <h2>Contact the owner</h2>
+        </mat-card-title>
+        <mat-card-content>
+            <form [formGroup]="messageForm" (ngSubmit)="sendMessage()" fxLayout="column">
+                <textarea matInput placeholder="Message for the owner" rows="6" formControlName="message"></textarea>
+                <div fxLayout="row" fxLayoutAlign="end center" class="mt2">
+                    <button mat-raised-button color="primary" type="submit"
+                        [disabled]="messageForm.invalid">Send</button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

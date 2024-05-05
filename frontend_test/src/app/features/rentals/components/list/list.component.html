@@ -1,0 +1,38 @@
+<div class="list">
+    <mat-card>
+        <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-card-title class="m0">Rentals available</mat-card-title>
+            <button mat-raised-button color="primary" routerLink="create">
+                <mat-icon>add</mat-icon>
+                <span class="ml1">Create</span>
+            </button>
+        </mat-card-header>
+        <div class="items mt2" fxLayout="row" fxLayout.lt-md="column">
+            <mat-card class="item" *ngFor="let rental of (rentals$ | async)?.rentals" fxFlex>
+                <mat-card-header>
+                    <mat-card-title>{{ rental.name }}</mat-card-title>
+                    <mat-card-subtitle>
+                        <app-owner-info [ownerId]="rental.owner_id"></app-owner-info>
+                    </mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image [src]="rental.picture" alt="Rental picture">
+                <mat-card-content>
+                    <p>
+                        {{ rental.description }}
+                    </p>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-raised-button color="primary" [routerLink]="['detail',rental.id]">
+                        <mat-icon>search</mat-icon>
+                        <span class="ml1">Detail</span>
+                    </button>
+                    <button *ngIf="rental.owner_id === user?.id" mat-raised-button color="primary"
+                        [routerLink]="['update',rental.id]">
+                        <mat-icon>edit</mat-icon>
+                        <span class="ml1">Edit</span>
+                    </button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </mat-card>
+</div>
