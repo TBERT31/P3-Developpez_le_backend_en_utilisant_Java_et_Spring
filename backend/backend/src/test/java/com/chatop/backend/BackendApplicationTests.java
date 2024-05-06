@@ -1,10 +1,10 @@
-package com.chatop.api;
+package com.chatop.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ApiApplicationTests {
+class BackendApplicationTests {
 
 	@Test
 	void contextLoads() {
