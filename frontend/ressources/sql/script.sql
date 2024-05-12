@@ -27,7 +27,7 @@ CREATE TABLE `MESSAGES` (
   `user_id` integer,
   `message` varchar(2000),
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP  
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE UNIQUE INDEX `USERS_index` ON `USERS` (`email`);
@@ -41,3 +41,4 @@ ALTER TABLE `USERS` ADD FOREIGN KEY (`id`) REFERENCES `RENTALS` (`owner_id`);
 ALTER TABLE `USERS` ADD FOREIGN KEY (`id`) REFERENCES `MESSAGES` (`user_id`);
 
 ALTER TABLE `RENTALS` ADD FOREIGN KEY (`id`) REFERENCES `MESSAGES` (`rental_id`);
+
