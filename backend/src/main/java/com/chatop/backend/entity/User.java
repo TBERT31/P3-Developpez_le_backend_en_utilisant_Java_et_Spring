@@ -47,4 +47,6 @@ public class User {
     )
     private List<Rental> rentals;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Message> messages;
 }
