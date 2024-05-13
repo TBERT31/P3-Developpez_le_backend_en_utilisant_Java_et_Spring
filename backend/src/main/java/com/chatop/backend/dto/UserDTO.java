@@ -25,18 +25,18 @@ public class UserDTO {
 
     @NotNull(message = "Email must not be null")
     @NotEmpty(message = "Email must not be empty")
-    @NotBlank(message = "Email must not be empty")
+    @NotBlank(message = "Email must not be blank")
     @Email(message = "Email is not compliant")
     private String email;
 
     @NotNull(message = "The name must not be null")
     @NotEmpty(message = "The name must not be empty")
-    @NotBlank(message = "The name must not be empty")
+    @NotBlank(message = "The name must not be blank")
     private String name;
 
     @NotNull(message = "Password must not be null")
     @NotEmpty(message = "Password must not be empty")
-    @NotBlank(message = "Password must not be empty")
+    @NotBlank(message = "Password must not be blank")
     @Size(min = 6, max=64, message = "The password must be between 6 and 64 characters long")
     private String password;
 
@@ -47,23 +47,23 @@ public class UserDTO {
 
     public static UserDTO fromEntity(User user) {
         return UserDTO.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .name(user.getName())
-                .password(user.getPassword())
-                .createdAt(user.getCreatedAt())
-                .updatedAt(user.getUpdatedAt())
+                    .id(user.getId())
+                    .email(user.getEmail())
+                    .name(user.getName())
+                    .password(user.getPassword())
+                    .createdAt(user.getCreatedAt())
+                    .updatedAt(user.getUpdatedAt())
                 .build();
     }
 
     public static User toEntity(UserDTO userDTO) {
         return User.builder()
-                .id(userDTO.getId())
-                .email(userDTO.getEmail())
-                .name(userDTO.getName())
-                .password(userDTO.getPassword())
-                .createdAt(userDTO.getCreatedAt())
-                .updatedAt(userDTO.getUpdatedAt())
+                    .id(userDTO.getId())
+                    .email(userDTO.getEmail())
+                    .name(userDTO.getName())
+                    .password(userDTO.getPassword())
+                    .createdAt(userDTO.getCreatedAt())
+                    .updatedAt(userDTO.getUpdatedAt())
                 .build();
     }
 }
