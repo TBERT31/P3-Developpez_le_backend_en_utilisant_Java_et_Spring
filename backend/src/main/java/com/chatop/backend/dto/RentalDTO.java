@@ -38,13 +38,19 @@ public class RentalDTO {
     @Size(max = 2000, message = "Description can be up to 2000 characters long")
     private String description;
 
-    @NotNull(message = "Owner must not be null")
-    private UserDTO owner;
+    // Permet de renvoyer l'objet owner (qui est un user) dans le json
+    // @NotNull(message = "Owner must not be null")
+    // private UserDTO owner;
+
+    // Permet de renvoyer uniquement l'owner_id dans le json
+    @NotNull(message = "Owner id must not be null")
+    @Positive(message = "Owner id must be a positive value")
+    private Long owner_id;
 
     @NotNull(message = "Creation date must not be null")
-    private LocalDateTime createdAt;
+    private LocalDateTime created_at;
 
-    private LocalDateTime updatedAt;
+    private LocalDateTime updated_at;
 
     public static RentalDTO fromEntity(Rental rental) {
         return RentalDTO.builder()
@@ -54,9 +60,10 @@ public class RentalDTO {
                     .price(rental.getPrice())
                     .picture(rental.getPicture())
                     .description(rental.getDescription())
-                    .owner(UserDTO.fromEntity(rental.getOwner()))
-                    .createdAt(rental.getCreatedAt())
-                    .updatedAt(rental.getUpdatedAt())
+                    //.owner(UserDTO.fromEntity(rental.getOwner()))
+                    .owner_id(rental.getOwner().getId())
+                    .created_at(rental.getCreated_at())
+                    .updated_at(rental.getUpdated_at())
                 .build();
     }
 
@@ -68,9 +75,14 @@ public class RentalDTO {
                     .price(rentalDTO.getPrice())
                     .picture(rentalDTO.getPicture())
                     .description(rentalDTO.getDescription())
-                    .owner(UserDTO.toEntity(rentalDTO.getOwner()))
-                    .createdAt(rentalDTO.getCreatedAt())
-                    .updatedAt(rentalDTO.getUpdatedAt())
+                    //.owner(UserDTO.toEntity(rentalDTO.getOwner()))
+                    .owner(
+                            User.builder()
+                                    .id(rentalDTO.getOwner_id())
+                                    .build()
+                    )
+                    .created_at(rentalDTO.getCreated_at())
+                    .updated_at(rentalDTO.getUpdated_at())
                 .build();
     }
 }

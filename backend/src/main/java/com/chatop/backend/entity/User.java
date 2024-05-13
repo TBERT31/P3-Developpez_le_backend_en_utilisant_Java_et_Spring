@@ -33,10 +33,10 @@ public class User {
     private String password;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime created_at;
 
     @Column(name = "updated_at", nullable = true)
-    private LocalDateTime updatedAt;
+    private LocalDateTime updated_at;
 
     @OneToMany(
             mappedBy = "owner",
@@ -49,4 +49,5 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages;
+
 }

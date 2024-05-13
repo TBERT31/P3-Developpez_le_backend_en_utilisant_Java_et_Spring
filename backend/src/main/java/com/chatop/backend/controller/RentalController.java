@@ -4,6 +4,7 @@ import com.chatop.backend.dto.RentalDTO;
 import com.chatop.backend.dto.UserDTO;
 import com.chatop.backend.service.RentalService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +16,10 @@ import java.util.Optional;
 @CrossOrigin("http://localhost:4200")
 @RequiredArgsConstructor
 public class RentalController {
+
     private final RentalService rentalService;
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<RentalDTO>> getRentals(){
         return ResponseEntity.ok(rentalService.getRentals());
     }

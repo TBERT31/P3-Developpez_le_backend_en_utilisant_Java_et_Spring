@@ -41,9 +41,9 @@ public class UserDTO {
     private String password;
 
     @NotNull(message = "Creation date must not be null")
-    private LocalDateTime createdAt;
+    private LocalDateTime created_at;
 
-    private LocalDateTime updatedAt;
+    private LocalDateTime updated_at;
 
     public static UserDTO fromEntity(User user) {
         return UserDTO.builder()
@@ -51,8 +51,8 @@ public class UserDTO {
                     .email(user.getEmail())
                     .name(user.getName())
                     .password(user.getPassword())
-                    .createdAt(user.getCreatedAt())
-                    .updatedAt(user.getUpdatedAt())
+                    .created_at(user.getCreated_at())
+                    .updated_at(user.getUpdated_at())
                 .build();
     }
 
@@ -62,8 +62,8 @@ public class UserDTO {
                     .email(userDTO.getEmail())
                     .name(userDTO.getName())
                     .password(userDTO.getPassword())
-                    .createdAt(userDTO.getCreatedAt())
-                    .updatedAt(userDTO.getUpdatedAt())
+                    .created_at(userDTO.getCreated_at())
+                    .updated_at(userDTO.getUpdated_at())
                 .build();
     }
 }

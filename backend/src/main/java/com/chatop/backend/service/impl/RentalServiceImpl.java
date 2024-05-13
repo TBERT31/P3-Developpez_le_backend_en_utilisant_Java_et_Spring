@@ -6,6 +6,7 @@ import com.chatop.backend.entity.Rental;
 import com.chatop.backend.repository.RentalRepository;
 import com.chatop.backend.service.RentalService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -17,7 +18,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RentalServiceImpl implements RentalService {
 
-    private RentalRepository rentalRepository;
+    private final RentalRepository rentalRepository;
+
     private RentalDTO rentalDTO;
 
     @Override

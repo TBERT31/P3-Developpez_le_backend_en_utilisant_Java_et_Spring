@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor // Indispensable pour éviter l'erreur : Variable 'userRepository' might not have been initialized
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
-    private final UserService userService;
+    private UserRepository userRepository;
+    private UserService userService;
 
 
 }

@@ -2,6 +2,7 @@ package com.chatop.backend.dto;
 
 import com.chatop.backend.entity.Message;
 import com.chatop.backend.entity.Rental;
+import com.chatop.backend.entity.User;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,11 +18,23 @@ import java.time.LocalDateTime;
 public class MessageDTO {
     private Long id;
 
-    @NotNull(message = "Rental must not be null")
-    private RentalDTO rental;
+    // Permet de renvoyer l'objet rental dans le json
+    // @NotNull(message = "Rental must not be null")
+    // private RentalDTO rental;
 
-    @NotNull(message = "User must not be null")
-    private UserDTO user;
+    // Permet de renvoyer uniquement le rental_id dans le json
+    @NotNull(message = "Rental id must not be null")
+    @Positive(message = "Rental id must be a positive value")
+    private Long rental_id;
+
+    // Permet de renvoyer l'objet user dans le json
+    // @NotNull(message = "User must not be null")
+    // private UserDTO user;
+
+    // Permet de renvoyer uniquement l'user_id dans le json
+    @NotNull(message = "User id must not be null")
+    @Positive(message = "User id must be a positive value")
+    private Long user_id;
 
     @NotNull(message = "Message content must not be null")
     @NotEmpty(message = "Message content must not be empty")
@@ -30,29 +43,41 @@ public class MessageDTO {
     private String message;
 
     @NotNull(message = "Creation date must not be null")
-    private LocalDateTime createdAt;
+    private LocalDateTime created_at;
 
-    private LocalDateTime updatedAt;
+    private LocalDateTime updated_at;
 
     public static MessageDTO fromEntity(Message message){
         return MessageDTO.builder()
                     .id(message.getId())
-                    .rental(RentalDTO.fromEntity(message.getRental()))
-                    .user(UserDTO.fromEntity(message.getUser()))
+                    //.rental(RentalDTO.fromEntity(message.getRental()))
+                    //.user(UserDTO.fromEntity(message.getUser()))
+                    .rental_id(message.getRental().getId())
+                    .user_id(message.getUser().getId())
                     .message(message.getMessage())
-                    .createdAt(message.getCreatedAt())
-                    .updatedAt(message.getUpdatedAt())
+                    .created_at(message.getCreated_at())
+                    .updated_at(message.getUpdated_at())
                 .build();
     }
 
     public static Message toEntity(MessageDTO messageDTO){
         return Message.builder()
                     .id(messageDTO.getId())
-                    .rental(RentalDTO.toEntity(messageDTO.getRental()))
-                    .user(UserDTO.toEntity(messageDTO.getUser()))
+                    //.rental(RentalDTO.toEntity(messageDTO.getRental()))
+                    //.user(UserDTO.toEntity(messageDTO.getUser()))
+                    .rental(
+                        Rental.builder()
+                                .id(messageDTO.getRental_id())
+                                .build()
+                    )
+                    .user(
+                        User.builder()
+                                .id(messageDTO.getUser_id())
+                                .build()
+                    )
                     .message(messageDTO.getMessage())
-                    .createdAt(messageDTO.getCreatedAt())
-                    .updatedAt(messageDTO.getUpdatedAt())
+                    .created_at(messageDTO.getCreated_at())
+                    .updated_at(messageDTO.getUpdated_at())
                 .build();
     }
 }
