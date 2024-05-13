@@ -29,9 +29,9 @@ public class UserDTO {
     @Email(message = "Email is not compliant")
     private String email;
 
-    @NotNull(message = "The name must not be null")
-    @NotEmpty(message = "The name must not be empty")
-    @NotBlank(message = "The name must not be blank")
+    @NotNull(message = "User name must not be null")
+    @NotEmpty(message = "User name must not be empty")
+    @NotBlank(message = "User name must not be blank")
     private String name;
 
     @NotNull(message = "Password must not be null")

@@ -19,9 +19,9 @@ public class RentalDTO {
 
     private Long id;
 
-    @NotNull(message = "The name must not be null")
-    @NotEmpty(message = "The name must not be empty")
-    @NotBlank(message = "The name must not be blank")
+    @NotNull(message = "Rental name must not be null")
+    @NotEmpty(message = "Rental name must not be empty")
+    @NotBlank(message = "Rental name must not be blank")
     @Size(min = 1, max = 64, message = "The name must be between 1 and 64 characters long")
     private String name;
 
