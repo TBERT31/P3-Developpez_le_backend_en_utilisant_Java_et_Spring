@@ -1,8 +1,8 @@
 CREATE TABLE `USERS` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `email` varchar(255),
-  `name` varchar(255),
-  `password` varchar(255),
+  `email` varchar(45),
+  `name` varchar(45),
+  `password` varchar(64),
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, -- Depuis MySQL 5.6, il est utile de préciser si le timestamp peut-être NULL ou non.
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP  -- Depuis MySQL 5.6, il est utile de préciser si le timestamp peut-être NULL ou non.
 );
@@ -11,7 +11,7 @@ CREATE TABLE `USERS` (
 
 CREATE TABLE `RENTALS` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
-  `name` varchar(255),
+  `name` varchar(64),
   `surface` numeric,
   `price` numeric,
   `picture` varchar(255),
