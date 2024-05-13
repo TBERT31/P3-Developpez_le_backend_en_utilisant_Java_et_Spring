@@ -1,5 +1,5 @@
 CREATE TABLE `USERS` (
-                         `id` int PRIMARY KEY AUTO_INCREMENT,
+                         `id` bigint PRIMARY KEY AUTO_INCREMENT,
                          `email` varchar(45),
                          `name` varchar(45),
                          `password` varchar(64),
@@ -8,23 +8,22 @@ CREATE TABLE `USERS` (
 );
 
 
-
 CREATE TABLE `RENTALS` (
-                           `id` integer PRIMARY KEY AUTO_INCREMENT,
+                           `id` bigint PRIMARY KEY AUTO_INCREMENT,
                            `name` varchar(64),
-                           `surface` numeric,
-                           `price` numeric,
+                           `surface` decimal(10, 2),
+                           `price` decimal(10, 2),
                            `picture` varchar(255),
                            `description` varchar(2000),
-                           `owner_id` integer NOT NULL,
+                           `owner_id` bigint NOT NULL,
                            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                            `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `MESSAGES` (
-                            `id` integer PRIMARY KEY AUTO_INCREMENT,
-                            `rental_id` integer,
-                            `user_id` integer,
+                            `id` bigint PRIMARY KEY AUTO_INCREMENT,
+                            `rental_id` bigint,
+                            `user_id` bigint,
                             `message` varchar(2000),
                             `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                             `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
@@ -47,8 +46,6 @@ ALTER TABLE `RENTALS`
         FOREIGN KEY (`owner_id`) REFERENCES `USERS` (`id`)
             ON DELETE CASCADE -- Lorsque un user est supprimé, on supprimer les rentals qui lui sont liées
             ON UPDATE CASCADE; -- Lorsque un user est mise à jour, on met à jours les rentals qui lui sont liées
-
-
 
 /*
   --# ALTER TABLE `USERS` ADD FOREIGN KEY (`id`) REFERENCES `MESSAGES` (`user_id`);

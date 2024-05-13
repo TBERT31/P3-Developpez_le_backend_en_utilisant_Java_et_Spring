@@ -37,4 +37,5 @@ public class Message {
 
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime updatedAt;
+
 }

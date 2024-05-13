@@ -27,10 +27,10 @@ public class Rental {
     @Column(name = "name", nullable = false, length = 64)
     private String name;
 
-    @Column(name = "surface", precision = 10, scale = 2) // Jusqu'à 10 chiffres au total et 2 nombre après la virgule max
+    @Column(name = "surface", nullable = false)
     private Double surface;
 
-    @Column(name = "price", precision = 10, scale = 2)
+    @Column(name = "price", nullable = false)
     private Double price;
 
     @Column(name = "picture")
