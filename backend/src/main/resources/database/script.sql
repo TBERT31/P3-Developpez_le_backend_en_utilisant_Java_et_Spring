@@ -32,14 +32,14 @@ CREATE TABLE `MESSAGES` (
 
 CREATE UNIQUE INDEX `USERS_index` ON `USERS` (`email`);
 
-CREATE INDEX owner_id ON `RENTALS` (owner_id); -- Obligatoire pour pouvoir créer la FK associée
-CREATE INDEX user_id ON `MESSAGES` (user_id); -- Obligatoire pour pouvoir créer la FK associée
-CREATE INDEX rental_id ON `MESSAGES` (rental_id); -- Obligatoire pour pouvoir créer la FK associée
+CREATE INDEX owner_id ON `RENTALS` (owner_id); -- Obligatoire pour pouvoir créer la FK associée et pour optimiser les recherches sur ces champs.
+CREATE INDEX user_id ON `MESSAGES` (user_id); -- Obligatoire pour pouvoir créer la FK associée et pour optimiser les recherches sur ces champs.
+CREATE INDEX rental_id ON `MESSAGES` (rental_id); -- Obligatoire pour pouvoir créer la FK associée et pour optimiser les recherches sur ces champs.
 
 /*
-  --# ALTER TABLE `USERS` ADD FOREIGN KEY (`id`) REFERENCES `RENTALS` (`owner_id`); 
-  Le requête au dessus, initialement proposée est un peu étrange, la FK ne doit-elle pas être dans l'autre sens ? 
-  C'est-à-dire que l'utilisateur doit exister avant de pouvoir lui associer une propriétée.
+  --# ALTER TABLE `USERS` ADD FOREIGN KEY (`id`) REFERENCES `RENTALS` (`owner_id`);
+  Le requête au dessus, initialement proposée est un peu étrange, la FK ne doit-elle pas être dans l'autre sens ?
+  C'est-à-dire que l'utilisateur doit exister avant de pouvoir lui associer une location.
   Relation 1 User --> n Rentals, la FK doit-être dans la table RENTALS.
 */
 ALTER TABLE `RENTALS`
@@ -50,7 +50,7 @@ ALTER TABLE `RENTALS`
 
 
 
-/* 
+/*
   --# ALTER TABLE `USERS` ADD FOREIGN KEY (`id`) REFERENCES `MESSAGES` (`user_id`);
   Même réflexion pour créer le message l'utilisateur doit-être référencé et pas l'inverse ...
   Relation 1 User --> n Message, la FK doit-être dans la table MESSAGES.
@@ -62,9 +62,9 @@ ALTER TABLE `MESSAGES`
             ON UPDATE CASCADE; -- Lorsque un user est mise à jour, on met à jours les rentals qui lui sont liées
 
 
-/* 
+/*
   --# ALTER TABLE `RENTALS` ADD FOREIGN KEY (`id`) REFERENCES `MESSAGES` (`rental_id`);
-  Même réflexion pour créer le message la propriété doit-être référencée et pas l'inverse ...
+  Même réflexion pour créer le message la location doit-être référencée et pas l'inverse ...
   Relation 1 Rental --> n Message, la FK doit-être dans la table MESSAGES.
 */
 ALTER TABLE `MESSAGES`
@@ -73,9 +73,9 @@ ALTER TABLE `MESSAGES`
             ON DELETE CASCADE -- Lorsque un user est supprimé, on supprimer les rentals qui lui sont liées
             ON UPDATE CASCADE; -- Lorsque un user est mise à jour, on met à jours les rentals qui lui sont liées
 
-/* 
+/*
   Après analyse du fichier /ressources/mockoon/rental-oc.json, et lors de la requête sur la route suivante localhost:3001/api/auth/me qui renvoie cet objet :
-  
+
   {
     "id": 1,
     "name": "Test TEST",
@@ -84,7 +84,7 @@ ALTER TABLE `MESSAGES`
     "updated_at": "2022/08/02"
   }
 
-  Il semble pertinent d'insérer le user "Test TEST" dans la BDD afin de reproduire l'environnement mockoon. 
+  Il semble pertinent d'insérer le user "Test TEST" dans la BDD afin de reproduire l'environnement mockoon.
   Un deuxième id utilisateur est également créé ajoutons en un second
 */
 INSERT INTO `USERS`

@@ -32,14 +32,14 @@ CREATE TABLE `MESSAGES` (
 
 CREATE UNIQUE INDEX `USERS_index` ON `USERS` (`email`); 
 
-CREATE INDEX owner_id ON `RENTALS` (owner_id); -- Obligatoire pour pouvoir créer la FK associée
-CREATE INDEX user_id ON `MESSAGES` (user_id); -- Obligatoire pour pouvoir créer la FK associée
-CREATE INDEX rental_id ON `MESSAGES` (rental_id); -- Obligatoire pour pouvoir créer la FK associée
+CREATE INDEX owner_id ON `RENTALS` (owner_id); -- Obligatoire pour pouvoir créer la FK associée et pour optimiser les recherches sur ces champs.
+CREATE INDEX user_id ON `MESSAGES` (user_id); -- Obligatoire pour pouvoir créer la FK associée et pour optimiser les recherches sur ces champs.
+CREATE INDEX rental_id ON `MESSAGES` (rental_id); -- Obligatoire pour pouvoir créer la FK associée et pour optimiser les recherches sur ces champs.
 
 /*
   --# ALTER TABLE `USERS` ADD FOREIGN KEY (`id`) REFERENCES `RENTALS` (`owner_id`); 
   Le requête au dessus, initialement proposée est un peu étrange, la FK ne doit-elle pas être dans l'autre sens ? 
-  C'est-à-dire que l'utilisateur doit exister avant de pouvoir lui associer une propriétée.
+  C'est-à-dire que l'utilisateur doit exister avant de pouvoir lui associer une location.
   Relation 1 User --> n Rentals, la FK doit-être dans la table RENTALS.
 */
 ALTER TABLE `RENTALS`
@@ -64,7 +64,7 @@ ON UPDATE CASCADE; -- Lorsque un user est mise à jour, on met à jours les rent
 
 /* 
   --# ALTER TABLE `RENTALS` ADD FOREIGN KEY (`id`) REFERENCES `MESSAGES` (`rental_id`);
-  Même réflexion pour créer le message la propriété doit-être référencée et pas l'inverse ...
+  Même réflexion pour créer le message la location doit-être référencée et pas l'inverse ...
   Relation 1 Rental --> n Message, la FK doit-être dans la table MESSAGES.
 */
 ALTER TABLE `MESSAGES` 
