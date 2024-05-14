@@ -6,10 +6,8 @@ import com.chatop.backend.entity.Rental;
 import com.chatop.backend.repository.RentalRepository;
 import com.chatop.backend.service.RentalService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,10 +30,15 @@ public class RentalServiceImpl implements RentalService {
 
     @Override
     public Optional<RentalDTO> getRentalById(Integer rentalId) {
-
         Optional<Rental> rental = rentalRepository.findById(rentalId);
-
         return rental.map(RentalDTO::fromEntity);
-
     }
+
+    @Override
+    public Optional<RentalDTO> createRental(RentalDTO rentalDTO) {
+        Rental rental = RentalDTO.toEntity(rentalDTO);
+        Rental savedRental = rentalRepository.save(rental);
+        return Optional.ofNullable(RentalDTO.fromEntity(savedRental));
+    }
+
 }
