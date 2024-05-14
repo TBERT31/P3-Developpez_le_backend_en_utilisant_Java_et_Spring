@@ -45,64 +45,26 @@ public class RentalController {
             @RequestParam(value = "picture", required = false) MultipartFile picture
             //@RequestParam("owner_id") Long owner_id
     ) {
-
         RentalDTO rentalDTO = RentalDTO.builder()
                 .name(name)
                 .surface(surface)
                 .price(price)
                 .description(description)
-                //.owner_id(1l)
+                //.owner_id(1L)
                 .created_at(LocalDateTime.now())
                 .updated_at(null)
                 .build();
 
-        if (picture != null && !picture.isEmpty()) {
-            try {
-                // Ensure the uploads directory exists
-                String uploadDir = "uploads";
-                Path uploadPath = Paths.get(uploadDir);
-                if (!Files.exists(uploadPath)) {
-                    Files.createDirectories(uploadPath);
-                }
-
-                // Génére un nom de fichier unique en utilisant le nom du fichier original et l'horodatage actuel.
-                String originalFileName = picture.getOriginalFilename();
-                String fileNameWithoutExtension = "";
-                String fileExtension = "";
-                if (originalFileName != null && originalFileName.contains(".")) {
-                    int dotIndex = originalFileName.lastIndexOf("."); // trouve l'index du dernier "." dans le nom du file
-                    fileNameWithoutExtension = originalFileName.substring(0, dotIndex); // récupère tout ce qu'il y a avant l'extension
-                    fileExtension = originalFileName.substring(dotIndex); // récupère l'extension
-                }
-                String uniqueFileName = fileNameWithoutExtension + "_" + System.currentTimeMillis() + fileExtension;
-
-                // Enregistre le fichier dans le répertoire uploads
-                Path filePath = uploadPath.resolve(uniqueFileName);
-                Files.copy(picture.getInputStream(), filePath);
-
-                // Définit l'URL de l'image dans le RentalDTO
-                String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                        .path("/uploads/")
-                        .path(uniqueFileName)
-                        .toUriString();
-                rentalDTO.setPicture(fileDownloadUri);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                        Map.of("message", "Failed to upload picture")
-                );
+        try {
+            Optional<RentalDTO> createdRental = rentalService.createRental(rentalDTO, picture);
+            if (createdRental.isPresent()) {
+                return ResponseEntity.ok().body(Map.of("message", "Rental created!"));
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "Failed to create rental"));
             }
-        }
-
-        Optional<RentalDTO> createdRental = rentalService.createRental(rentalDTO);
-        if (createdRental.isPresent()) {
-            return ResponseEntity.ok().body(
-                    Map.of("message", "Rental created!")
-            );
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    Map.of("message", "Failed to create rental")
-            );
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "Failed to upload picture"));
         }
     }
 }
