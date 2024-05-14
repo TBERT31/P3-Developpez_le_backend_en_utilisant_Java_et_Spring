@@ -7,12 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -60,11 +57,49 @@ public class RentalController {
             if (createdRental.isPresent()) {
                 return ResponseEntity.ok().body(Map.of("message", "Rental created!"));
             } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "Failed to create rental"));
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                        Map.of("message", "Failed to create rental")
+                );
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "Failed to upload picture"));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    Map.of("message", "Failed to upload picture")
+            );
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateRental(
+            @PathVariable("id") Integer rentalId,
+            @RequestParam("name") String name,
+            @RequestParam("surface") Double surface,
+            @RequestParam("price") Double price,
+            @RequestParam("description") String description,
+            @RequestParam(value = "picture", required = false) MultipartFile picture
+    ) {
+        RentalDTO rentalDTO = RentalDTO.builder()
+                .name(name)
+                .surface(surface)
+                .price(price)
+                .description(description)
+                .updated_at(LocalDateTime.now())
+                .build();
+
+        try {
+            Optional<RentalDTO> updatedRental = rentalService.updateRental(rentalId, rentalDTO, picture);
+            if (updatedRental.isPresent()) {
+                return ResponseEntity.ok().body(Map.of("message", "Rental updated!"));
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                        Map.of("message", "Failed to update rental")
+                );
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    Map.of("message", "Failed to upload picture")
+            );
         }
     }
 }
