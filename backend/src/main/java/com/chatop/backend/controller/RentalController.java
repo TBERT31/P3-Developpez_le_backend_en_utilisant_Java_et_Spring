@@ -106,4 +106,20 @@ public class RentalController {
             );
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String, String>> deleteRental(@PathVariable("id") Integer rentalId) {
+        try {
+            rentalService.deleteRental(rentalId);
+            return ResponseEntity.ok(
+                    Map.of("message", "Rental deleted!")
+            );
+        } catch (IOException e) {
+            System.err.println("Failed to delete rental");
+            e.printStackTrace(System.err);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    Map.of("message", "Failed to delete rental")
+            );
+        }
+    }
 }

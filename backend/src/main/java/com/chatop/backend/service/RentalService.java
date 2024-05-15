@@ -13,4 +13,5 @@ public interface RentalService {
     Optional<RentalDTO> getRentalById(Integer rentalId);
     Optional<RentalDTO> createRental(RentalDTO rentalDTO, MultipartFile picture) throws IOException;
     Optional<RentalDTO> updateRental(Integer rental_id, RentalDTO rentalDTO, MultipartFile picture) throws IOException;
+    void  deleteRental(Integer rentalId) throws IOException;
 }

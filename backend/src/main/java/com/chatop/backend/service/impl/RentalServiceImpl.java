@@ -78,12 +78,41 @@ public class RentalServiceImpl implements RentalService {
         existingRental.setUpdated_at(LocalDateTime.now());
 
         // Traitement de l'image (voir fonction dédiée)
-        String pictureUrl = processRentalPicture(picture, existingRental);
-        existingRental.setPicture(pictureUrl);
+        if(picture != null && !picture.isEmpty()) {
+            String pictureUrl = processRentalPicture(picture, existingRental);
+            existingRental.setPicture(pictureUrl);
+        }
 
         // Enregistrer les modifications dans la base de données
         Rental savedRental = rentalRepository.save(existingRental);
         return Optional.ofNullable(RentalDTO.fromEntity(savedRental));
+    }
+
+    @Override
+    public void deleteRental(Integer rentalId) throws IOException {
+        // Récupérer l'entité existante
+        Optional<Rental> existingRentalOpt = rentalRepository.findById(rentalId);
+        if (existingRentalOpt.isEmpty()) {
+            throw new IOException("The rental you are trying to delete does not exist");
+        }
+        Rental existingRental = existingRentalOpt.get();
+
+        // Supprimer l'image associée si elle existe
+        String currentPicturePath = existingRental.getPicture();
+        if (currentPicturePath != null && !currentPicturePath.isEmpty()) {
+            try {
+                // Extraire le nom de fichier de l'URL
+                String fileName = Paths.get(new URI(currentPicturePath).getPath()).getFileName().toString();
+                // Construire le chemin complet en utilisant le répertoire d'uploads
+                Path oldFilePath = Paths.get("uploads").resolve(fileName);
+                Files.deleteIfExists(oldFilePath);
+            } catch (Exception e) {
+                throw new IOException("Failed to delete image file", e);
+            }
+        }
+
+        // Supprimer l'entité du rental de la base de données
+        rentalRepository.delete(existingRental);
     }
 
     private String processRentalPicture(MultipartFile picture, Rental existingRental) throws IOException {
