@@ -28,9 +28,9 @@ public class RentalController {
         return ResponseEntity.ok(rentalService.getRentals());
     }
 
-    @GetMapping("/{rentalId}")
-    public ResponseEntity<Optional<RentalDTO>> getRentalById(@PathVariable Integer rentalId){
-        return ResponseEntity.ok(rentalService.getRentalById(rentalId));
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<RentalDTO>> getRentalById(@PathVariable Integer id){
+        return ResponseEntity.ok(rentalService.getRentalById(id));
     }
 
     @PostMapping
@@ -74,7 +74,7 @@ public class RentalController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, String>> updateRental(
-            @PathVariable("id") Integer rentalId,
+            @PathVariable("id") Integer id,
             @RequestParam("name") String name,
             @RequestParam("surface") Double surface,
             @RequestParam("price") Double price,
@@ -90,7 +90,7 @@ public class RentalController {
                 .build();
 
         try {
-            Optional<RentalDTO> updatedRental = rentalService.updateRental(rentalId, rentalDTO, picture);
+            Optional<RentalDTO> updatedRental = rentalService.updateRental(id, rentalDTO, picture);
             if (updatedRental.isPresent()) {
                 return ResponseEntity.ok().body(
                         Map.of("message", "Rental updated!")
@@ -110,9 +110,9 @@ public class RentalController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, String>> deleteRental(@PathVariable("id") Integer rentalId) {
+    public ResponseEntity<Map<String, String>> deleteRental(@PathVariable("id") Integer id) {
         try {
-            rentalService.deleteRental(rentalId);
+            rentalService.deleteRental(id);
             return ResponseEntity.ok(
                     Map.of("message", "Rental deleted!")
             );

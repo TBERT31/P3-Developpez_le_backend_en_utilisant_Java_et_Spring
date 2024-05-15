@@ -2,6 +2,7 @@ package com.chatop.backend.dto;
 
 
 import com.chatop.backend.entity.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,15 +24,16 @@ public class UserDTO {
 
     private Long id;
 
+    @NotBlank(message = "User name must not be blank")
+    private String name;
+
     @NotBlank(message = "Email must not be blank")
     @Email(message = "Email is not compliant")
     private String email;
 
-    @NotBlank(message = "User name must not be blank")
-    private String name;
-
     @NotBlank(message = "Password must not be blank")
     @Size(min = 6, max=64, message = "The password must be between 6 and 64 characters long")
+    @JsonIgnore // Cette annotation empêche la sérialisation du mot de passe
     private String password;
 
     @NotNull(message = "Creation date must not be null")
