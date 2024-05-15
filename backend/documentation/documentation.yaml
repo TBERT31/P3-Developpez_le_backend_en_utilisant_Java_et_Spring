@@ -1,0 +1,292 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8080/api
+    description: Generated server url
+security:
+  - bearerAuth: []
+paths:
+  /rentals/{id}:
+    get:
+      tags:
+        - rentals
+      operationId: getRentalById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RentalDTO'
+    put:
+      tags:
+        - rentals
+      operationId: updateRental
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: name
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: surface
+          in: query
+          required: true
+          schema:
+            type: number
+            format: double
+        - name: price
+          in: query
+          required: true
+          schema:
+            type: number
+            format: double
+        - name: description
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                picture:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+    delete:
+      tags:
+        - rentals
+      operationId: deleteRental
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+  /rentals:
+    get:
+      tags:
+        - rentals
+      operationId: getRentals
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/RentalDTO'
+    post:
+      tags:
+        - rentals
+      operationId: createRental
+      parameters:
+        - name: name
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: surface
+          in: query
+          required: true
+          schema:
+            type: number
+            format: double
+        - name: price
+          in: query
+          required: true
+          schema:
+            type: number
+            format: double
+        - name: description
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                picture:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+  /messages/:
+    post:
+      tags:
+        - messages
+      operationId: createMessage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+  /user/{id}:
+    get:
+      tags:
+        - users
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+components:
+  schemas:
+    MessageDTO:
+      required:
+        - created_at
+        - message
+        - rental_id
+        - user_id
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        rental_id:
+          type: integer
+          format: int64
+        user_id:
+          type: integer
+          format: int64
+        message:
+          maxLength: 2000
+          minLength: 0
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    UserDTO:
+      required:
+        - created_at
+        - email
+        - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    RentalDTO:
+      required:
+        - created_at
+        - name
+        - owner_id
+        - price
+        - surface
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          maxLength: 64
+          minLength: 1
+          type: string
+        surface:
+          type: number
+          format: double
+        price:
+          type: number
+          format: double
+        picture:
+          type: string
+        description:
+          maxLength: 2000
+          minLength: 0
+          type: string
+        owner_id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+  securitySchemes:
+    bearerAuth:
+      type: http
+      name: bearerAuth
+      scheme: bearer
+      bearerFormat: JWT
