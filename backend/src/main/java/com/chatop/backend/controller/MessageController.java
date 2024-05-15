@@ -3,6 +3,7 @@ package com.chatop.backend.controller;
 import com.chatop.backend.dto.MessageDTO;
 import com.chatop.backend.service.MessageService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.util.Optional;
 @RequestMapping("/messages")
 @CrossOrigin("http://localhost:4200")
 @RequiredArgsConstructor
+@Tag(name = "Messages")
 public class MessageController {
 
     private final MessageService messageService;

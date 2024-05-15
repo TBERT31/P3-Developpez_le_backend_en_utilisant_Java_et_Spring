@@ -2,6 +2,7 @@ package com.chatop.backend.controller;
 
 import com.chatop.backend.dto.RentalDTO;
 import com.chatop.backend.service.RentalService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.Optional;
 @RequestMapping("/rentals")
 @CrossOrigin("http://localhost:4200")
 @RequiredArgsConstructor
+@Tag(name = "Rentals")
 public class RentalController {
 
     private final RentalService rentalService;
