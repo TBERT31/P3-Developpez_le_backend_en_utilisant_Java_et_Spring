@@ -23,19 +23,13 @@ public class UserDTO {
 
     private Long id;
 
-    @NotNull(message = "Email must not be null")
-    @NotEmpty(message = "Email must not be empty")
     @NotBlank(message = "Email must not be blank")
     @Email(message = "Email is not compliant")
     private String email;
 
-    @NotNull(message = "User name must not be null")
-    @NotEmpty(message = "User name must not be empty")
     @NotBlank(message = "User name must not be blank")
     private String name;
 
-    @NotNull(message = "Password must not be null")
-    @NotEmpty(message = "Password must not be empty")
     @NotBlank(message = "Password must not be blank")
     @Size(min = 6, max=64, message = "The password must be between 6 and 64 characters long")
     private String password;

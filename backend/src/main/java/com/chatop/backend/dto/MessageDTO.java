@@ -36,8 +36,6 @@ public class MessageDTO {
     @Positive(message = "User id must be a positive value")
     private Long user_id;
 
-    @NotNull(message = "Message content must not be null")
-    @NotEmpty(message = "Message content must not be empty")
     @NotBlank(message = "Message content must not be blank")
     @Size(max = 2000, message = "Message content can be up to 2000 characters long")
     private String message;

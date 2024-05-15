@@ -34,7 +34,7 @@ public class RentalController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createRental(
+    public ResponseEntity<Map<String, String>> createRental(
             @RequestParam("name") String name,
             @RequestParam("surface") Double surface,
             @RequestParam("price") Double price,
@@ -55,14 +55,16 @@ public class RentalController {
         try {
             Optional<RentalDTO> createdRental = rentalService.createRental(rentalDTO, picture);
             if (createdRental.isPresent()) {
-                return ResponseEntity.ok().body(Map.of("message", "Rental created!"));
+                return ResponseEntity.ok().body(
+                        Map.of("message", "Rental created!")
+                );
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                         Map.of("message", "Failed to create rental")
                 );
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Failed to upload picture");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     Map.of("message", "Failed to upload picture")
             );
@@ -70,7 +72,7 @@ public class RentalController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateRental(
+    public ResponseEntity<Map<String, String>> updateRental(
             @PathVariable("id") Integer rentalId,
             @RequestParam("name") String name,
             @RequestParam("surface") Double surface,
@@ -89,14 +91,16 @@ public class RentalController {
         try {
             Optional<RentalDTO> updatedRental = rentalService.updateRental(rentalId, rentalDTO, picture);
             if (updatedRental.isPresent()) {
-                return ResponseEntity.ok().body(Map.of("message", "Rental updated!"));
+                return ResponseEntity.ok().body(
+                        Map.of("message", "Rental updated!")
+                );
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                         Map.of("message", "Failed to update rental")
                 );
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Failed to upload picture");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     Map.of("message", "Failed to upload picture")
             );
