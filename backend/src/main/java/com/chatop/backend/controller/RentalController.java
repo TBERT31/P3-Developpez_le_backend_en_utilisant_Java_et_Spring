@@ -65,6 +65,7 @@ public class RentalController {
             }
         } catch (IOException e) {
             System.err.println("Failed to upload picture");
+            e.printStackTrace(System.err);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     Map.of("message", "Failed to upload picture")
             );
@@ -101,6 +102,7 @@ public class RentalController {
             }
         } catch (IOException e) {
             System.err.println("Failed to upload picture");
+            e.printStackTrace(System.err);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                     Map.of("message", "Failed to upload picture")
             );
