@@ -1,13 +1,10 @@
 package com.chatop.backend.service.impl;
 
-import com.chatop.backend.dto.RentalDTO;
 import com.chatop.backend.dto.UserDTO;
-import com.chatop.backend.entity.Rental;
 import com.chatop.backend.entity.User;
 import com.chatop.backend.repository.UserRepository;
 import com.chatop.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -24,4 +21,16 @@ public class UserServiceImpl implements UserService {
 
         return user.map(UserDTO::fromEntity);
     }
+
+//    @Override
+//    @Transactional
+//    public AuthenticationResponse register(UserDTO userDTO) {
+//        User user = UserDTO.toEntity(userDTO);
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//
+//        var savedUser = userRepository.save(user);
+//
+//
+//    }
+
 }
