@@ -3,6 +3,7 @@ package com.chatop.backend.config;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,7 +58,8 @@ public class JwtUtils {
                 .claim("authorities", userDetails.getAuthorities())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(200)))
-                .signWith(SignatureAlgorithm.HS256, jwtSigningKey).compact();
+                .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(jwtSigningKey.getBytes()))
+                .compact();
     }
 
     public Boolean isTokenValid(String token, UserDetails userDetails) {

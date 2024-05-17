@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
         );
         final User user = userRepository.findByEmail(request.getEmail()).get();
         Map<String, Object> claims = new HashMap<>();
-        claims.put("userId", user.getId());
+        claims.put("user_id", user.getId());
         claims.put("name", user.getName());
         final String token = jwtUtils.generateToken((UserDetails) user, claims);
         return AuthenticationResponse.builder()
