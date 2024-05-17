@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface UserService {
 
     Optional<UserDTO> getUserById(Integer user_id);
-//    AuthenticationResponse register(UserDTO userDTO);
-//    AuthenticationResponse login(AuthenticationRequest request);
+    AuthenticationResponse register(UserDTO userDTO);
+    AuthenticationResponse login(AuthenticationRequest request);
 }
