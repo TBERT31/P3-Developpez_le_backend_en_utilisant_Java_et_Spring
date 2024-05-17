@@ -29,7 +29,6 @@ import com.nimbusds.jose.jwk.source.ImmutableSecret;
 @Configuration
 public class SpringSecurityConfig {
 
-
 //    @Autowired
 //    private CustomUserDetailService customUserDetailsService;
 
