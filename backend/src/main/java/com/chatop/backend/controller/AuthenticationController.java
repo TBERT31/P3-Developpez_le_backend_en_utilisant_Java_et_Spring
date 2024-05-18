@@ -2,11 +2,9 @@ package com.chatop.backend.controller;
 
 
 import com.chatop.backend.dto.RegistrationRequest;
-import com.chatop.backend.entity.User;
-import com.chatop.backend.repository.UserRepository;
+import com.chatop.backend.dto.UserDTO;
 import com.chatop.backend.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,8 +18,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 
 @RestController
