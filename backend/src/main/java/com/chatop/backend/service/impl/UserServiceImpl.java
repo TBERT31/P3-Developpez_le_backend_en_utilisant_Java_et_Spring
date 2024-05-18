@@ -7,6 +7,7 @@ import com.chatop.backend.entity.User;
 import com.chatop.backend.repository.UserRepository;
 import com.chatop.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor // Indispensable pour éviter l'erreur : Variable 'userRepository' might not have been initialized
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public Optional<UserDTO> getUserById(Integer user_id) {
@@ -28,5 +30,10 @@ public class UserServiceImpl implements UserService {
         return user.map(UserDTO::fromEntity);
     }
 
-
+    public void createUser(String email, String password) {
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+    }
 }
