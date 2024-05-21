@@ -82,24 +82,38 @@ The backend of this project is built with Java version 17 and Spring Boot versio
 
 3. **Configure the application properties:**
 
-    Open `src/main/resources/application.properties` and configure the following properties with your MySQL database details:
+    Open `src/main/resources/application.yml` and configure the following properties with your MySQL database details:
 
     ```properties
-    spring.datasource.url=jdbc:mysql://localhost:3306/chatop
-    spring.datasource.username=your_username
-    spring.datasource.password=your_password
-    spring.jpa.hibernate.ddl-auto=update
-    spring.jpa.show-sql=true
-    # Uncomment and adjust the dialect if needed
-    # spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
+    spring:
+        application:
+            name: backend
+        datasource:
+            url: jdbc:mysql://localhost:3306/chatop
+            username: your_username
+            password: your_password
+        jpa:
+            hibernate:
+                ddl-auto: update
+            show-sql: true
+        # Uncomment and adjust the dialect if needed
+            # properties:
+                # hibernate:
+                    # dialect: org.hibernate.dialect.MySQL5Dialect
+        # enable_lazy_load_no_trans: true
 
-    server.port=3001
+    server:
+        port: 3001
     ```
 
     If you are using a different MySQL dialect, you may need to configure the Hibernate dialect:
 
     ```properties
-    spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+    spring:
+        jpa:
+            properties:
+                hibernate:
+                    dialect: org.hibernate.dialect.MySQL8Dialect
     ```
 
 4. **Install dependencies and run the application:**
