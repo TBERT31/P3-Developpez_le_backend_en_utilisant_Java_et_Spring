@@ -38,7 +38,7 @@ The frontend of this project was generated with [Angular CLI](https://github.com
 
 ## Start the backend
 
-The backend of this project is built with Java Spring Boot.
+The backend of this project is built with Java version 17 and Spring Boot version 3.2.5.
 
 ### Prerequisites
 
@@ -88,6 +88,18 @@ The backend of this project is built with Java Spring Boot.
     spring.datasource.url=jdbc:mysql://localhost:3306/chatop
     spring.datasource.username=your_username
     spring.datasource.password=your_password
+    spring.jpa.hibernate.ddl-auto=update
+    spring.jpa.show-sql=true
+    # Uncomment and adjust the dialect if needed
+    # spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
+
+    server.port=3001
+    ```
+
+    If you are using a different MySQL dialect, you may need to configure the Hibernate dialect:
+
+    ```properties
+    spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
     ```
 
 4. **Install dependencies and run the application:**
