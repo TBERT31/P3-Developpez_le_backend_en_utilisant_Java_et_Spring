@@ -3,15 +3,15 @@ info:
   title: OpenAPI definition
   version: v0
 servers:
-  - url: http://localhost:8080/api
+  - url: http://localhost:3001
     description: Generated server url
 security:
   - bearerAuth: []
 paths:
-  /rentals/{id}:
+  /api/rentals/{id}:
     get:
       tags:
-        - rentals
+        - Rentals
       operationId: getRentalById
       parameters:
         - name: id
@@ -29,7 +29,7 @@ paths:
                 $ref: '#/components/schemas/RentalDTO'
     put:
       tags:
-        - rentals
+        - Rentals
       operationId: updateRental
       parameters:
         - name: id
@@ -80,7 +80,7 @@ paths:
                   type: string
     delete:
       tags:
-        - rentals
+        - Rentals
       operationId: deleteRental
       parameters:
         - name: id
@@ -98,10 +98,10 @@ paths:
                 type: object
                 additionalProperties:
                   type: string
-  /rentals:
+  /api/rentals:
     get:
       tags:
-        - rentals
+        - Rentals
       operationId: getRentals
       responses:
         '200':
@@ -116,7 +116,7 @@ paths:
                     $ref: '#/components/schemas/RentalDTO'
     post:
       tags:
-        - rentals
+        - Rentals
       operationId: createRental
       parameters:
         - name: name
@@ -159,10 +159,10 @@ paths:
                 type: object
                 additionalProperties:
                   type: string
-  /messages/:
+  /api/messages:
     post:
       tags:
-        - messages
+        - Messages
       operationId: createMessage
       requestBody:
         content:
@@ -179,10 +179,50 @@ paths:
                 type: object
                 additionalProperties:
                   type: string
-  /user/{id}:
+  /api/auth/register:
+    post:
+      tags:
+        - Authentication
+      operationId: registerUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+  /api/auth/login:
+    post:
+      tags:
+        - Authentication
+      operationId: createAuthenticationToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+  /api/user/{id}:
     get:
       tags:
-        - users
+        - Users
       operationId: getUserById
       parameters:
         - name: id
@@ -191,6 +231,24 @@ paths:
           schema:
             type: integer
             format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+  /api/auth/me:
+    get:
+      tags:
+        - Authentication
+      operationId: getMe
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: OK
@@ -227,6 +285,33 @@ components:
         updated_at:
           type: string
           format: date-time
+    RegistrationRequest:
+      required:
+        - email
+        - name
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        password:
+          maxLength: 64
+          minLength: 6
+          type: string
+    AuthenticationRequest:
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          maxLength: 64
+          minLength: 6
+          type: string
     UserDTO:
       required:
         - created_at
