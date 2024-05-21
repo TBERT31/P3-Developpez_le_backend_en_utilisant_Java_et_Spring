@@ -18,6 +18,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Optional;
 
 
 @RestController
@@ -79,5 +80,23 @@ public class AuthenticationController {
                     .body(new AuthenticationResponse("Failed to register user: " + e.getMessage()));
         }
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserDTO> getMe(
+            @RequestHeader("Authorization") String token
+    ) {
+        // Extraire le token de l'en-tête Authorization
+        String jwt = token.substring(7);
+        String email = jwtUtil.extractEmail(jwt);
+
+        Optional<UserDTO> userDTO = userService.getUserByEmail(email);
+
+        if (userDTO.isPresent()) {
+            return ResponseEntity.ok(userDTO.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
 
 }

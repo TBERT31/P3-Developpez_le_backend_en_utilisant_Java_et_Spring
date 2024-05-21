@@ -24,9 +24,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<UserDTO> getUserById(Integer user_id) {
-
         Optional<User> user = userRepository.findById(user_id);
+        return user.map(UserDTO::fromEntity);
+    }
 
+    @Override
+    public Optional<UserDTO> getUserByEmail(String email) {
+        Optional<User> user = Optional.ofNullable(userRepository.findByEmail(email));
         return user.map(UserDTO::fromEntity);
     }
 
