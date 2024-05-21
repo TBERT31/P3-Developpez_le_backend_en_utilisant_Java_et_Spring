@@ -40,35 +40,38 @@ CREATE INDEX rental_id ON `MESSAGES` (rental_id); -- Obligatoire pour pouvoir cr
   Le requête au dessus, initialement proposée est un peu étrange, la FK ne doit-elle pas être dans l'autre sens ? 
   C'est-à-dire que l'utilisateur doit exister avant de pouvoir lui associer une location.
   Relation 1 User --> n Rentals, la FK doit-être dans la table RENTALS.
-*/
+*
 ALTER TABLE `RENTALS`
 ADD CONSTRAINT `FK_RENTALS_OWNERID_USERS_ID` -- On donne un nom plus compréhensible que ceux généré automatiquement par MySQL
 FOREIGN KEY (`owner_id`) REFERENCES `USERS` (`id`)
 ON DELETE CASCADE -- Lorsque un user est supprimé, on supprimer les rentals qui lui sont liées
 ON UPDATE CASCADE; -- Lorsque un user est mise à jour, on met à jours les rentals qui lui sont liées
+*/
 
 /* 
   --# ALTER TABLE `USERS` ADD FOREIGN KEY (`id`) REFERENCES `MESSAGES` (`user_id`);
   Même réflexion pour créer le message l'utilisateur doit-être référencé et pas l'inverse ...
   Relation 1 User --> n Message, la FK doit-être dans la table MESSAGES.
-*/
+*
 ALTER TABLE `MESSAGES` 
 ADD CONSTRAINT `FK_MESSAGES_USERID_USERS_ID` -- On donne un nom plus compréhensible que ceux généré automatiquement par MySQL
 FOREIGN KEY (`user_id`) REFERENCES `USERS` (`id`)
 ON DELETE CASCADE -- Lorsque un user est supprimé, on supprimer les rentals qui lui sont liées
 ON UPDATE CASCADE; -- Lorsque un user est mise à jour, on met à jours les rentals qui lui sont liées
+*/
 
 
 /* 
   --# ALTER TABLE `RENTALS` ADD FOREIGN KEY (`id`) REFERENCES `MESSAGES` (`rental_id`);
   Même réflexion pour créer le message la location doit-être référencée et pas l'inverse ...
   Relation 1 Rental --> n Message, la FK doit-être dans la table MESSAGES.
-*/
+*
 ALTER TABLE `MESSAGES` 
 ADD CONSTRAINT `FK_MESSAGES_RENTALID_USERS_ID` -- On donne un nom plus compréhensible que ceux généré automatiquement par MySQL
 FOREIGN KEY (`rental_id`) REFERENCES `RENTALS` (`id`)
 ON DELETE CASCADE -- Lorsque un user est supprimé, on supprimer les rentals qui lui sont liées
 ON UPDATE CASCADE; -- Lorsque un user est mise à jour, on met à jours les rentals qui lui sont liées
+*/
 
 /* 
   Après analyse du fichier /ressources/mockoon/rental-oc.json, et lors de la requête sur la route GET suivante localhost:3001/api/auth/me qui renvoie cet objet :
