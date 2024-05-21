@@ -10,23 +10,29 @@
 
 The frontend of this project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.0.
 
-Git clone:
+1. **Git clone:**
 
-> git clone https://github.com/TBERT31/P3-Developpez_le_backend_en_utilisant_Java_et_Spring/tree/main
+    ```sh
+    git clone https://github.com/TBERT31/P3-Developpez_le_backend_en_utilisant_Java_et_Spring/tree/main
+    ```
 
-Go inside folder:
+2. **Go inside folder:**
 
-> cd frontend
+    ```sh
+    cd backend
+    ```
 
-Install dependencies:
+3. **Install dependencies:**
 
-> npm install
+    ```sh
+    npm install
+    ```
 
-Development server:
+4. **Development server:**
 
 > Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-Build
+5. **Build**
 
 > Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
@@ -57,12 +63,12 @@ The backend of this project is built with Java Spring Boot.
     The SQL script to create the schema is available at `ressources/sql/script.sql`.
 
     ```sh
-    mysql -u your_username -p your_database_name < ressources/sql/script.sql
+    mysql -u your_username -p chatop < ressources/sql/script.sql
     ```
 
 ### Running the backend
 
-1. **Clone the repository:**
+1. **(If you haven't already done so) Clone the repository:**
 
     ```sh
     git clone https://github.com/TBERT31/P3-Developpez_le_backend_en_utilisant_Java_et_Spring/tree/main
@@ -79,7 +85,7 @@ The backend of this project is built with Java Spring Boot.
     Open `src/main/resources/application.properties` and configure the following properties with your MySQL database details:
 
     ```properties
-    spring.datasource.url=jdbc:mysql://localhost:3306/your_database_name
+    spring.datasource.url=jdbc:mysql://localhost:3306/chatop
     spring.datasource.username=your_username
     spring.datasource.password=your_password
     ```
@@ -91,7 +97,7 @@ The backend of this project is built with Java Spring Boot.
     mvn spring-boot:run
     ```
 
-    The backend server will start on `http://localhost:8080`.
+    The backend server will start on `http://localhost:3001`.
 
 ## Resources
 
