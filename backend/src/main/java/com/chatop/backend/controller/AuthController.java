@@ -22,7 +22,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/auth")
 @Tag(name = "Authentication")
-public class AuthenticationController {
+public class AuthController {
 
     @Autowired
     private UserService userService;
