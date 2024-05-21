@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
 
     /*
         Utile pour mettre en place la réponse avec le status 401 "Unauthorized"

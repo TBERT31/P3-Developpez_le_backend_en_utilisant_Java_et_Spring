@@ -22,7 +22,7 @@ public class MessageController {
 
     private final MessageService messageService;
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<Map<String, String>> createMessage(
             @RequestBody MessageDTO messageDTO
     ) {

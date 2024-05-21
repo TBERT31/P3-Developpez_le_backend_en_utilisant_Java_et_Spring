@@ -19,11 +19,11 @@ public class SecurityConfig {
 
     private final JwtRequestFilter jwtRequestFilter;
     private final MyUserDetailsService myUserDetailsService;
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAuthEntryPoint jwtAuthenticationEntryPoint;
 
     public SecurityConfig(JwtRequestFilter jwtRequestFilter,
                           MyUserDetailsService myUserDetailsService,
-                          JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint
+                          JwtAuthEntryPoint jwtAuthenticationEntryPoint
     ) {
         this.jwtRequestFilter = jwtRequestFilter;
         this.myUserDetailsService = myUserDetailsService;
@@ -38,6 +38,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/auth/login",
                                 "/api/auth/register",
+                                "/uploads/**",
                                 // resources for swagger to work properly
                                 "/v2/api-docs",
                                 "/v3/api-docs",
