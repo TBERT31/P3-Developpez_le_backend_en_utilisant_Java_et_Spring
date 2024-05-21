@@ -19,10 +19,15 @@ public class SecurityConfig {
 
     private final JwtRequestFilter jwtRequestFilter;
     private final MyUserDetailsService myUserDetailsService;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    public SecurityConfig(JwtRequestFilter jwtRequestFilter, MyUserDetailsService myUserDetailsService) {
+    public SecurityConfig(JwtRequestFilter jwtRequestFilter,
+                          MyUserDetailsService myUserDetailsService,
+                          JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint
+    ) {
         this.jwtRequestFilter = jwtRequestFilter;
         this.myUserDetailsService = myUserDetailsService;
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
     }
 
     @Bean
@@ -30,8 +35,21 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // Use lambda to disable CSRF
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/auth/login", "/auth/register").permitAll()
+                        .requestMatchers(
+                                "/api/auth/login",
+                                "/api/auth/register",
+                                // resources for swagger to work properly
+                                "/v2/api-docs",
+                                "/v3/api-docs",
+                                "/v3/api-docs/**",
+                                "/swagger-resources",
+                                "/swagger-resources/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html").permitAll()
                         .anyRequest().authenticated()
+                )
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

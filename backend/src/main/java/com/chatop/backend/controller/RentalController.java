@@ -17,8 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/rentals")
-@CrossOrigin("http://localhost:4200")
+@RequestMapping("/api/rentals")
 @RequiredArgsConstructor
 @Tag(name = "Rentals")
 public class RentalController {

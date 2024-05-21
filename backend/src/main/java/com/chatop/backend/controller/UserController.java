@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/user")
-@CrossOrigin("http://localhost:4200")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 @Tag(name = "Users")
 public class UserController {

@@ -1,6 +1,5 @@
 package com.chatop.backend.controller;
 
-
 import com.chatop.backend.dto.RegistrationRequest;
 import com.chatop.backend.dto.UserDTO;
 import com.chatop.backend.service.UserService;
@@ -20,10 +19,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
 
-
 @RestController
-@RequestMapping("/auth")
-@CrossOrigin("http://localhost:4200")
+@RequestMapping("/api/auth")
 @Tag(name = "Authentication")
 public class AuthenticationController {
 
@@ -42,22 +39,27 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> createAuthenticationToken(
             @RequestBody AuthenticationRequest authenticationRequest
-    ) throws Exception {
-
+    ) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())
             );
+
+            final UserDetails userDetails = userDetailsService
+                    .loadUserByUsername(authenticationRequest.getEmail());
+
+            final String jwt = jwtUtil.generateToken(userDetails);
+
+            return ResponseEntity.ok(new AuthenticationResponse(jwt));
         } catch (BadCredentialsException e) {
-            throw new Exception("Incorrect email or password", e);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    new AuthenticationResponse("Incorrect email or password")
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new AuthenticationResponse("An error occurred: " + e.getMessage())
+            );
         }
-
-        final UserDetails userDetails = userDetailsService
-                .loadUserByUsername(authenticationRequest.getEmail());
-
-        final String jwt = jwtUtil.generateToken(userDetails);
-
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 
     @PostMapping("/register")
@@ -82,9 +84,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserDTO> getMe(
-            @RequestHeader("Authorization") String token
-    ) {
+    public ResponseEntity<UserDTO> getMe(@RequestHeader("Authorization") String token) {
         // Extraire le token de l'en-tête Authorization
         String jwt = token.substring(7);
         String email = jwtUtil.extractEmail(jwt);
@@ -97,6 +97,4 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-
-
 }

@@ -15,6 +15,4 @@ spring:
     # enable_lazy_load_no_trans: true
 
 server:
-  servlet:
-    context-path: /api
   port: 8080
