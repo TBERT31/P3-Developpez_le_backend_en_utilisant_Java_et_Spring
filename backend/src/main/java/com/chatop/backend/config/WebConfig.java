@@ -17,15 +17,15 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:uploads/");
     }
 
+    /**
+        Cette configuration aide à traiter uniformement les URLs avec ou sans slash final
+        ATTENTION cependant permettre à la fois /resources et /resources/
+        sans distinction claire peut conduire à des failles de sécurité,
+        particulièrement en combinaison avec certaines configurations de sécurité
+    */
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
         configurer.setUseTrailingSlashMatch(true);
-        /*
-            Cette configuration aide à traiter uniformement les URLs avec ou sans slash final
-            ATTENTION cependant permettre à la fois /resources et /resources/
-            sans distinction claire peut conduire à des failles de sécurité,
-            particulièrement en combinaison avec certaines configurations de sécurité
-         */
     }
 
 }

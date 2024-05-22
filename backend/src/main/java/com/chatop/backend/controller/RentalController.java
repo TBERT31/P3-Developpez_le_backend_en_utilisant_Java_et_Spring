@@ -52,7 +52,7 @@ public class RentalController {
     ) {
         // Extraire le token de l'en-tête Authorization
         String jwt = token.substring(7);
-        String email = jwtUtil.extractEmail(jwt);
+        String email = jwtUtil.extractUsername(jwt);
 
         Optional<UserDTO> userDTO = userService.getUserByEmail(email);
 
@@ -105,42 +105,48 @@ public class RentalController {
     ) {
         // Extraire le token de l'en-tête Authorization
         String jwt = token.substring(7);
-        String email = jwtUtil.extractEmail(jwt);
+        String email = jwtUtil.extractUsername(jwt);
 
         Optional<UserDTO> userDTO = userService.getUserByEmail(email);
         Optional<RentalDTO> existingRentalDTO = rentalService.getRentalById(id);
 
-        if (userDTO.get().getId() == existingRentalDTO.get().getOwner_id()) {
-            RentalDTO rentalDTO = RentalDTO.builder()
-                    .name(name)
-                    .surface(surface)
-                    .price(price)
-                    .owner_id(userDTO.get().getId())
-                    .description(description)
-                    .updated_at(LocalDateTime.now())
-                    .build();
+        if (userDTO.isPresent() && existingRentalDTO.isPresent()) {
+            if (userDTO.get().getId().equals(existingRentalDTO.get().getOwner_id())) {
+                RentalDTO rentalDTO = RentalDTO.builder()
+                        .name(name)
+                        .surface(surface)
+                        .price(price)
+                        .owner_id(userDTO.get().getId())
+                        .description(description)
+                        .updated_at(LocalDateTime.now())
+                        .build();
 
-            try {
-                Optional<RentalDTO> updatedRental = rentalService.updateRental(id, rentalDTO, picture);
-                if (updatedRental.isPresent()) {
-                    return ResponseEntity.ok().body(
-                            Map.of("message", "Rental updated!")
-                    );
-                } else {
+                try {
+                    Optional<RentalDTO> updatedRental = rentalService.updateRental(id, rentalDTO, picture);
+                    if (updatedRental.isPresent()) {
+                        return ResponseEntity.ok().body(
+                                Map.of("message", "Rental updated!")
+                        );
+                    } else {
+                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                                Map.of("message", "Failed to update rental")
+                        );
+                    }
+                } catch (IOException e) {
+                    System.err.println("Failed to upload picture");
+                    e.printStackTrace(System.err);
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                            Map.of("message", "Failed to update rental")
+                            Map.of("message", "Failed to upload picture")
                     );
                 }
-            } catch (IOException e) {
-                System.err.println("Failed to upload picture");
-                e.printStackTrace(System.err);
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                        Map.of("message", "Failed to upload picture")
+            } else {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                        Map.of("message", "You are not authorized to update this rental")
                 );
             }
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                    Map.of("message", "You are not authorized to update this rental")
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    Map.of("message", "Resource not found")
             );
         }
     }

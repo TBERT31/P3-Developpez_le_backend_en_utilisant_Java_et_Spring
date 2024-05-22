@@ -85,7 +85,7 @@ public class AuthController {
     public ResponseEntity<Optional<UserDTO>> getMe(@RequestHeader("Authorization") String token) {
         // Extraire le token de l'en-tête Authorization
         String jwt = token.substring(7);
-        String email = jwtUtil.extractEmail(jwt);
+        String email = jwtUtil.extractUsername(jwt);
 
         Optional<UserDTO> userDTO = userService.getUserByEmail(email);
 

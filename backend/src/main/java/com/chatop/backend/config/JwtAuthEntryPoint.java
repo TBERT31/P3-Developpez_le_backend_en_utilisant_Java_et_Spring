@@ -11,10 +11,10 @@ import java.io.IOException;
 @Component
 public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
 
-    /*
-        Utile pour mettre en place la réponse avec le status 401 "Unauthorized"
-        lorsque le jwt n'est pas le bon, au lieu d'avoir un Status "403 Forbidden"
-    */
+    /**
+     *  Utile pour mettre en place la réponse avec le status 401 "Unauthorized"
+     *  lorsque le jwt n'est pas le bon, au lieu d'avoir un Status "403 Forbidden"
+     */
 
     @Override
     public void commence(HttpServletRequest request,

@@ -3,11 +3,8 @@ package com.chatop.backend.service.impl;
 
 import com.chatop.backend.dto.RentalDTO;
 import com.chatop.backend.entity.Rental;
-import com.chatop.backend.entity.User;
 import com.chatop.backend.repository.RentalRepository;
-import com.chatop.backend.repository.UserRepository;
 import com.chatop.backend.service.RentalService;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.stereotype.Service;
@@ -30,7 +27,6 @@ import java.util.stream.Collectors;
 public class RentalServiceImpl implements RentalService {
 
     private final RentalRepository rentalRepository;
-    private final UserRepository userRepository;
 
 
     // Définir la taille maximale du fichier (par exemple, 8 Mo)

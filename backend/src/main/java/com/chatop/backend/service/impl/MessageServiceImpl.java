@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
-import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -17,7 +16,7 @@ public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
 
     @Override
-    public Optional<MessageDTO> createMessage(MessageDTO messageDTO) throws IOException {
+    public Optional<MessageDTO> createMessage(MessageDTO messageDTO) {
 
         Message message = MessageDTO.toEntity(messageDTO);
         Message savedMessage = messageRepository.save(message);

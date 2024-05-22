@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
             IllegalArgumentException.class
     })
     // Capture les exceptions JWT à un niveau global
-    public ResponseEntity<ExceptionRepresentation> handleJwtException(Exception e) {
+    public ResponseEntity<ExceptionRepresentation> handleJwtException() {
         ExceptionRepresentation representation = ExceptionRepresentation.builder()
                 .message("Invalid or expired JWT token")
                 .build();
