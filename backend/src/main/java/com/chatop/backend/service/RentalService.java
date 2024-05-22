@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RentalService {
-
     List<RentalDTO> getRentals();
     Optional<RentalDTO> getRentalById(Integer rental_id);
     Optional<RentalDTO> createRental(RentalDTO rentalDTO, MultipartFile picture) throws IOException;

@@ -31,7 +31,6 @@ public class RentalController {
 
     @GetMapping
     public ResponseEntity< Map<String,List<RentalDTO>> > getRentals(){
-        //return ResponseEntity.ok(rentalService.getRentals());
         return ResponseEntity.ok().body(
                 Map.of("rentals", rentalService.getRentals())
         );

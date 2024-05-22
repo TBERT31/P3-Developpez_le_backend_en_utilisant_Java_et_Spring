@@ -1,6 +1,6 @@
 Guide+d'étapes+clés.pdf
 Spécifications+techniques.pdf
-Berteau_Thomas_1_repo_05052024
+Berteau_Thomas_1_repo_05052024.txt
 P3_Berteau_Thomas.zip
 oral.txt
 login_example.txt
@@ -47,3 +47,6 @@ yarn-error.log
 # System files
 /frontend/.DS_Store
 /frontend/Thumbs.db
+
+#documentation
+/swagger-ui-master/

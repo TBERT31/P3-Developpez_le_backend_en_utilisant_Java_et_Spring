@@ -125,6 +125,11 @@ The backend of this project is built with Java version 17 and Spring Boot versio
 
     The backend server will start on `http://localhost:3001`.
 
+5. **API documentation**
+
+> Once the application has started, you can access and analyze the Swagger documentation by navigating to: `http://localhost:3001/swagger-ui/index.html`.
+
+
 ## Resources
 
 ### Mockoon env
