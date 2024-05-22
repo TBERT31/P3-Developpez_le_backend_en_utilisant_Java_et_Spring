@@ -1,7 +1,10 @@
 package com.chatop.backend.controller;
 
 import com.chatop.backend.dto.RentalDTO;
+import com.chatop.backend.dto.UserDTO;
 import com.chatop.backend.service.RentalService;
+import com.chatop.backend.service.UserService;
+import com.chatop.backend.util.JwtUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +26,8 @@ import java.util.Optional;
 public class RentalController {
 
     private final RentalService rentalService;
+    private final UserService userService;
+    private final JwtUtil jwtUtil;
 
     @GetMapping
     public ResponseEntity< Map<String,List<RentalDTO>> > getRentals(){
@@ -43,37 +48,51 @@ public class RentalController {
             @RequestParam("surface") Double surface,
             @RequestParam("price") Double price,
             @RequestParam("description") String description,
-            @RequestParam(value = "picture", required = false) MultipartFile picture
-            //@RequestParam("owner_id") Long owner_id
+            @RequestParam(value = "picture", required = false) MultipartFile picture,
+            @RequestHeader("Authorization") String token
     ) {
-        RentalDTO rentalDTO = RentalDTO.builder()
-                .name(name)
-                .surface(surface)
-                .price(price)
-                .description(description)
-                //.owner_id(1L)
-                .created_at(LocalDateTime.now())
-                .updated_at(null)
-                .build();
+        // Extraire le token de l'en-tête Authorization
+        String jwt = token.substring(7);
+        String email = jwtUtil.extractEmail(jwt);
 
-        try {
-            Optional<RentalDTO> createdRental = rentalService.createRental(rentalDTO, picture);
-            if (createdRental.isPresent()) {
-                return ResponseEntity.ok().body(
-                        Map.of("message", "Rental created!")
-                );
-            } else {
+        Optional<UserDTO> userDTO = userService.getUserByEmail(email);
+
+
+        if (userDTO.isPresent()) {
+            RentalDTO rentalDTO = RentalDTO.builder()
+                    .name(name)
+                    .surface(surface)
+                    .price(price)
+                    .description(description)
+                    .owner_id(userDTO.get().getId())
+                    .created_at(LocalDateTime.now())
+                    .updated_at(null)
+                    .build();
+
+            try {
+                Optional<RentalDTO> createdRental = rentalService.createRental(rentalDTO, picture);
+                if (createdRental.isPresent()) {
+                    return ResponseEntity.ok().body(
+                            Map.of("message", "Rental created!")
+                    );
+                } else {
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                            Map.of("message", "Failed to create rental")
+                    );
+                }
+            } catch (IOException e) {
+                System.err.println("Failed to upload picture");
+                e.printStackTrace(System.err);
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                        Map.of("message", "Failed to create rental")
+                        Map.of("message", "Failed to upload picture")
                 );
             }
-        } catch (IOException e) {
-            System.err.println("Failed to upload picture");
-            e.printStackTrace(System.err);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    Map.of("message", "Failed to upload picture")
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    Map.of("message", "Owner not found")
             );
         }
+
     }
 
     @PutMapping("/{id}")
