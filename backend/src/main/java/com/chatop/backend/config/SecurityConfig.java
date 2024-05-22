@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtRequestFilter jwtRequestFilter;
-    private final JwtAuthEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAuthEntryPoint jwtAuthEntryPoint;
 
     @Bean
     // Chaîne de filtres de sécurité à appliquer à chaque requête HTTP.
@@ -47,7 +47,7 @@ public class SecurityConfig {
                 )
                 // Gestion des exceptions lors de l'authentification
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                        .authenticationEntryPoint(jwtAuthEntryPoint)
                 )
                 // Gestion de la session
                 .sessionManagement(session -> session
