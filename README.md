@@ -89,9 +89,9 @@ The backend of this project is built with Java version 17 and Spring Boot versio
         application:
             name: backend
         datasource:
-            url: jdbc:mysql://localhost:3306/chatop
-            username: your_username
-            password: your_password
+            url: jdbc:mysql://${APP_DB_HOST}:${APP_DB_PORT}/${APP_DB_NAME}
+            username: ${APP_DB_USER}
+            password: ${APP_DB_PASS}
         jpa:
             hibernate:
                 ddl-auto: update
