@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface RentalService {
     List<RentalDTO> getRentals();
-    Optional<RentalDTO> getRentalById(Integer rental_id);
+    Optional<RentalDTO> getRentalById(Long rental_id);
     Optional<RentalDTO> createRental(RentalDTO rentalDTO, MultipartFile picture) throws IOException;
     Optional<RentalDTO> updateRental(Integer rental_id, RentalDTO rentalDTO, MultipartFile picture) throws IOException;
     void  deleteRental(Integer rental_id) throws IOException;

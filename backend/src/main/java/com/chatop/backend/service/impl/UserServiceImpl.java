@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public Optional<UserDTO> getUserById(Integer user_id) {
+    public Optional<UserDTO> getUserById(Long user_id) {
         Optional<User> user = userRepository.findById(user_id);
         return user.map(UserDTO::fromEntity);
     }

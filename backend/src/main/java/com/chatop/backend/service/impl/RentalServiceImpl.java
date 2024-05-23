@@ -44,7 +44,7 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    public Optional<RentalDTO> getRentalById(Integer rental_id) {
+    public Optional<RentalDTO> getRentalById(Long rental_id) {
         Optional<Rental> rental = rentalRepository.findById(rental_id);
         return rental.map(RentalDTO::fromEntity);
     }
@@ -64,7 +64,7 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public Optional<RentalDTO> updateRental(Integer rental_id, RentalDTO rentalDTO, MultipartFile picture) throws IOException {
         // Récupérer l'entité existante
-        Optional<Rental> existingRentalOpt = rentalRepository.findById(rental_id);
+        Optional<Rental> existingRentalOpt = rentalRepository.findById(rental_id.longValue());
         if (existingRentalOpt.isEmpty()) {
             throw new IOException("The rental you are trying to modify does not exist");
         }
@@ -91,7 +91,7 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public void deleteRental(Integer rental_id) throws IOException {
         // Récupérer l'entité existante
-        Optional<Rental> existingRentalOpt = rentalRepository.findById(rental_id);
+        Optional<Rental> existingRentalOpt = rentalRepository.findById(rental_id.longValue());
         if (existingRentalOpt.isEmpty()) {
             throw new IOException("The rental you are trying to delete does not exist");
         }

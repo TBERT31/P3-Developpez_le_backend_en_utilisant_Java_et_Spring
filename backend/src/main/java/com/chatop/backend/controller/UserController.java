@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<UserDTO>> getUserById(@PathVariable Integer id){
-        return ResponseEntity.ok(userService.getUserById(id));
+        return ResponseEntity.ok(userService.getUserById(id.longValue()));
     }
 
 }

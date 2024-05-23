@@ -38,7 +38,7 @@ public class RentalController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<RentalDTO>> getRentalById(@PathVariable Integer id){
-        return ResponseEntity.ok(rentalService.getRentalById(id));
+        return ResponseEntity.ok(rentalService.getRentalById(id.longValue()));
     }
 
     @PostMapping
@@ -108,7 +108,7 @@ public class RentalController {
         String email = jwtUtil.extractUsername(jwt);
 
         Optional<UserDTO> userDTO = userService.getUserByEmail(email);
-        Optional<RentalDTO> existingRentalDTO = rentalService.getRentalById(id);
+        Optional<RentalDTO> existingRentalDTO = rentalService.getRentalById(id.longValue());
 
         if (userDTO.isPresent() && existingRentalDTO.isPresent()) {
             if (userDTO.get().getId().equals(existingRentalDTO.get().getOwner_id())) {

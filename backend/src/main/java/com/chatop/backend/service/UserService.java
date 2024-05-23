@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Validated
 public interface UserService {
-    Optional<UserDTO> getUserById(Integer user_id);
+    Optional<UserDTO> getUserById(Long user_id);
     Optional<UserDTO> getUserByEmail(String email);
     void registerUser(RegistrationRequest registrationRequest) throws Exception;
 }
