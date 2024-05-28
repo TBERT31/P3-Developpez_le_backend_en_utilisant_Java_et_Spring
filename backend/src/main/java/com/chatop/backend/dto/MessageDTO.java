@@ -41,7 +41,6 @@ public class MessageDTO {
     @Size(max = 2000, message = "Message content can be up to 2000 characters long")
     private String message;
 
-    @NotNull(message = "Creation date must not be null")
     @JsonFormat(pattern = "yyyy/MM/dd")
     private LocalDateTime created_at;
 

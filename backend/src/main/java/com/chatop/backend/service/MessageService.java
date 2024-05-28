@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface MessageService {
 
-    Optional<MessageDTO> createMessage(MessageDTO messageDTO) throws IOException;
+    Optional<MessageDTO> createMessage(MessageDTO messageDTO);
 
 }

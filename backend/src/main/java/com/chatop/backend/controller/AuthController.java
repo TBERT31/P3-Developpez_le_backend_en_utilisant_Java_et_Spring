@@ -1,22 +1,22 @@
 package com.chatop.backend.controller;
 
-import com.chatop.backend.dto.RegistrationRequest;
+import com.chatop.backend.dto.request.RegistrationRequest;
+import com.chatop.backend.dto.response.AuthResponse;
 import com.chatop.backend.dto.UserDTO;
 import com.chatop.backend.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 import com.chatop.backend.service.auth.MyUserDetailsService;
 import com.chatop.backend.util.JwtUtil;
-import com.chatop.backend.dto.AuthenticationRequest;
+import com.chatop.backend.dto.request.AuthRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -31,58 +31,44 @@ public class AuthController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> createAuthenticationToken(
-            @RequestBody AuthenticationRequest authenticationRequest
+    public ResponseEntity<AuthResponse> createAuthenticationToken(
+            @Valid @RequestBody AuthRequest authRequest
     ) {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword())
-            );
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
+        );
 
-            final UserDetails userDetails = userDetailsService
-                    .loadUserByUsername(authenticationRequest.getEmail());
+        final UserDetails userDetails = userDetailsService
+                .loadUserByUsername(authRequest.getEmail());
 
-            final String jwt = jwtUtil.generateToken(userDetails);
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setToken(jwtUtil.generateToken(userDetails));
 
-            return ResponseEntity.ok(Map.of("token", jwt));
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                    Map.of("message", "Incorrect email or password")
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    Map.of("message", "An error occurred: " + e.getMessage())
-            );
-        }
+        return ResponseEntity.ok(authResponse);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, String>> registerUser(
-            @RequestBody RegistrationRequest registrationRequest
+    public ResponseEntity<AuthResponse> registerUser(
+            @Valid @RequestBody RegistrationRequest registrationRequest
     ) {
-        try {
-            userService.registerUser(registrationRequest);
+        userService.registerUser(registrationRequest);
 
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(registrationRequest.getEmail(), registrationRequest.getPassword())
-            );
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(registrationRequest.getEmail(), registrationRequest.getPassword())
+        );
 
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(registrationRequest.getEmail());
-            final String jwt = jwtUtil.generateToken(userDetails);
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(registrationRequest.getEmail());
 
-            return ResponseEntity.ok(
-                    Map.of("token", jwt)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(
-                            Map.of("message", "Failed to register user: " + e.getMessage())
-                    );
-        }
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setToken(jwtUtil.generateToken(userDetails));
+
+        return ResponseEntity.ok(authResponse);
     }
 
     @GetMapping("/me")
-    public ResponseEntity<Optional<UserDTO>> getMe(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<Optional<UserDTO>> getMe(
+            @RequestHeader("Authorization") String token
+    ) {
         // Extraire le token de l'en-tête Authorization
         String jwt = token.substring(7);
         String email = jwtUtil.extractUsername(jwt);

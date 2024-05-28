@@ -36,7 +36,6 @@ public class UserDTO {
     @JsonIgnore // Cette annotation empêche la sérialisation du mot de passe
     private String password;
 
-    @NotNull(message = "Creation date must not be null")
     @JsonFormat(pattern = "yyyy/MM/dd")
     private LocalDateTime created_at;
 

@@ -41,7 +41,6 @@ public class Rental {
 
     @ManyToOne(
             cascade = {
-//                    CascadeType.PERSIST,
                     CascadeType.MERGE
             }
     )

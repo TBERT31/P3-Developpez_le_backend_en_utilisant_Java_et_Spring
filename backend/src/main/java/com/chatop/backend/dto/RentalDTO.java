@@ -46,7 +46,7 @@ public class RentalDTO {
     @Positive(message = "Owner id must be a positive value")
     private Long owner_id;
 
-    @NotNull(message = "Creation date must not be null")
+
     @JsonFormat(pattern = "yyyy/MM/dd")
     private LocalDateTime created_at;
 

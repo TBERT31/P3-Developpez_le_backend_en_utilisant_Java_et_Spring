@@ -1,17 +1,18 @@
 package com.chatop.backend.controller;
 
 import com.chatop.backend.dto.MessageDTO;
+import com.chatop.backend.dto.response.MessageResponse;
 import com.chatop.backend.service.MessageService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.io.IOException;
-import java.util.Map;
+
 import java.util.Optional;
 
 @RestController
@@ -23,29 +24,19 @@ public class MessageController {
     private final MessageService messageService;
 
     @PostMapping("")
-    public ResponseEntity<Map<String, String>> createMessage(
-            @RequestBody MessageDTO messageDTO
+    public ResponseEntity<MessageResponse> createMessage(
+           @Valid @RequestBody MessageDTO messageDTO
     ) {
+        MessageResponse messageResponse = new MessageResponse();
 
-        try {
-            Optional<MessageDTO> createdMessage = messageService.createMessage(messageDTO);
-            if (createdMessage.isPresent()) {
-                return ResponseEntity.ok(
-                        Map.of("message", "Message sent successfully")
-                );
-            } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                        Map.of("message", "Failed to send message")
-                );
-            }
-        } catch (IOException e) {
-            System.err.println("Failed to send message");
-            e.printStackTrace(System.err);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    Map.of("message", "Failed to send message")
-            );
+        Optional<MessageDTO> createdMessage = messageService.createMessage(messageDTO);
+        if (createdMessage.isPresent()) {
+            messageResponse.setMessage("Message sent successfully");
+            return ResponseEntity.ok(messageResponse);
+        } else {
+            messageResponse.setMessage("Failed to send message");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(messageResponse);
         }
-
     }
 
 }

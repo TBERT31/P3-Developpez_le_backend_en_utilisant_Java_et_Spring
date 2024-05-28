@@ -4,13 +4,20 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import org.hibernate.TransientPropertyValueException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -19,8 +26,7 @@ public class GlobalExceptionHandler {
             ExpiredJwtException.class,
             UnsupportedJwtException.class,
             MalformedJwtException.class,
-            SignatureException.class,
-            IllegalArgumentException.class
+            SignatureException.class
     })
     // Capture les exceptions JWT à un niveau global
     public ResponseEntity<ExceptionRepresentation> handleJwtException() {
@@ -31,6 +37,20 @@ public class GlobalExceptionHandler {
         // Retourne une réponse uniforme en cas d'erreur JWT avec un message d'erreur spécifique.
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
+                .body(representation);
+    }
+
+
+    @ExceptionHandler({
+            IllegalArgumentException.class
+    })
+    public ResponseEntity<ExceptionRepresentation> handleIllegalArgumentException(IllegalArgumentException illegalArgumentException) {
+        ExceptionRepresentation representation = ExceptionRepresentation.builder()
+                .message(illegalArgumentException.getMessage())
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
                 .body(representation);
     }
 
@@ -46,9 +66,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ExceptionRepresentation> handleException(){
+    public ResponseEntity<ExceptionRepresentation> handleDataIntegrityViolationException(DataIntegrityViolationException dataIntegrityViolationException){
         ExceptionRepresentation representation = ExceptionRepresentation.builder()
-                .message("This data already exist")
+                .message(dataIntegrityViolationException.getMessage())
                 .build();
 
         return ResponseEntity
@@ -57,9 +77,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(DisabledException.class)
-    public ResponseEntity<ExceptionRepresentation> handleDisabledException(){
+    public ResponseEntity<ExceptionRepresentation> handleDisabledException(DisabledException disabledException){
         ExceptionRepresentation representation = ExceptionRepresentation.builder()
-                .message("You cannot access your account because it is not activated")
+                .message(disabledException.getMessage())
                 .build();
 
         return ResponseEntity
@@ -67,5 +87,38 @@ public class GlobalExceptionHandler {
                 .body(representation);
     }
 
+    @ExceptionHandler(TransientPropertyValueException.class)
+    public ResponseEntity<ExceptionRepresentation> handleTransientPropertyValueException(TransientPropertyValueException transientPropertyValueException){
+        ExceptionRepresentation representation = ExceptionRepresentation.builder()
+                .message(transientPropertyValueException.getMessage())
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(representation);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ExceptionRepresentation> handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException){
+        List<String> errors = methodArgumentNotValidException.getBindingResult()
+                .getAllErrors()
+                .stream()
+                .map(error -> {
+                    if (error instanceof FieldError) {
+                        return ((FieldError) error).getDefaultMessage();
+                    } else {
+                        return error.getDefaultMessage();
+                    }
+                })
+                .collect(Collectors.toList());
+
+        ExceptionRepresentation representation = ExceptionRepresentation.builder()
+                .message(String.join(", ", errors))
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(representation);
+    }
 
 }
