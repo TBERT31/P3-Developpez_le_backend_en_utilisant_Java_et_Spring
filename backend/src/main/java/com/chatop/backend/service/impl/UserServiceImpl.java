@@ -1,7 +1,6 @@
 package com.chatop.backend.service.impl;
 
 import com.chatop.backend.dto.request.RegistrationRequest;
-import com.chatop.backend.dto.UserDTO;
 import com.chatop.backend.entity.User;
 import com.chatop.backend.repository.UserRepository;
 import com.chatop.backend.service.UserService;

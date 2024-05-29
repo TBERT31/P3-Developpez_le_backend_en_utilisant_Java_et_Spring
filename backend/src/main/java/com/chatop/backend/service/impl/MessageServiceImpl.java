@@ -1,6 +1,5 @@
 package com.chatop.backend.service.impl;
 
-import com.chatop.backend.dto.MessageDTO;
 import com.chatop.backend.entity.Message;
 import com.chatop.backend.repository.MessageRepository;
 import com.chatop.backend.service.MessageService;

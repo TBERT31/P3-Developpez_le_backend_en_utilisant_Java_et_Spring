@@ -4,7 +4,6 @@ import com.chatop.backend.dto.RentalDTO;
 import com.chatop.backend.dto.request.RentalRequest;
 import com.chatop.backend.dto.response.MessageResponse;
 import com.chatop.backend.dto.response.RentalsListResponse;
-import com.chatop.backend.dto.UserDTO;
 import com.chatop.backend.entity.Rental;
 import com.chatop.backend.entity.User;
 import com.chatop.backend.service.RentalService;

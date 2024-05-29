@@ -1,6 +1,5 @@
 package com.chatop.backend.service;
 
-import com.chatop.backend.dto.RentalDTO;
 import com.chatop.backend.entity.Rental;
 import org.springframework.web.multipart.MultipartFile;
 

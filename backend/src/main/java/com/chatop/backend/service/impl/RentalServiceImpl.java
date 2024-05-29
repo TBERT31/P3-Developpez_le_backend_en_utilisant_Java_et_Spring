@@ -1,7 +1,6 @@
 package com.chatop.backend.service.impl;
 
 
-import com.chatop.backend.dto.RentalDTO;
 import com.chatop.backend.entity.Rental;
 import com.chatop.backend.repository.RentalRepository;
 import com.chatop.backend.service.RentalService;
@@ -20,7 +19,6 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -111,7 +109,7 @@ public class RentalServiceImpl implements RentalService {
         if (picture != null && !picture.isEmpty()) {
             // Vérifier la taille du fichier
             if (picture.getSize() > MAX_FILE_SIZE) {
-                throw new IOException("File size exceeds the maximum allowed size of 8 MB");
+                throw new IOException("File size exceeds the maximum allowed size of "+MAX_FILE_SIZE+" MB");
             }
 
             // Vérifier l'extension du fichier
