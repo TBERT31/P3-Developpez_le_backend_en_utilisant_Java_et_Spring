@@ -16,11 +16,7 @@ public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
 
     @Override
-    public Optional<MessageDTO> createMessage(MessageDTO messageDTO) {
-
-        Message message = MessageDTO.toEntity(messageDTO);
-        Message savedMessage = messageRepository.save(message);
-        return Optional.ofNullable(MessageDTO.fromEntity(savedMessage));
-
+    public Optional<Message> createMessage(Message message) {
+        return Optional.of(messageRepository.save(message));
     }
 }

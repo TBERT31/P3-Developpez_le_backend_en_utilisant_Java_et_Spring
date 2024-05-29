@@ -22,19 +22,17 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public Optional<UserDTO> getUserById(Long user_id) {
-        Optional<User> user = userRepository.findById(user_id);
-        return user.map(UserDTO::fromEntity);
+    public Optional<User> getUserById(Long user_id) {
+        return userRepository.findById(user_id);
     }
 
     @Override
-    public Optional<UserDTO> getUserByEmail(String email) {
-        Optional<User> user = Optional.ofNullable(userRepository.findByEmail(email));
-        return user.map(UserDTO::fromEntity);
+    public Optional<User> getUserByEmail(String email) {
+        return Optional.ofNullable(userRepository.findByEmail(email));
     }
 
     @Override
-    public void registerUser(RegistrationRequest registrationRequest) throws IllegalArgumentException {
+    public User registerUser(RegistrationRequest registrationRequest) throws IllegalArgumentException {
         // Vérification si un utilisateur existe déjà avec cet email
         User existingUser = userRepository.findByEmail(registrationRequest.getEmail());
 
@@ -50,6 +48,6 @@ public class UserServiceImpl implements UserService {
         newUser.setCreated_at(LocalDateTime.now());
 
         // Enregistrer le nouvel utilisateur dans la base de données
-        userRepository.save(newUser);
+        return userRepository.save(newUser);
     }
 }

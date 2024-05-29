@@ -36,62 +36,54 @@ public class RentalServiceImpl implements RentalService {
     private static final List<String> ALLOWED_EXTENSIONS = List.of(".jpg", ".jpeg", ".png", ".webp", ".avif", ".apng", ".gif", ".svg");
 
     @Override
-    public List<RentalDTO> getRentals() {
-        List<Rental> rentals = rentalRepository.findAll();
-        return rentals.stream()
-                .map(RentalDTO::fromEntity)
-                .collect(Collectors.toList());
+    public List<Rental> getRentals() {
+        return rentalRepository.findAll();
     }
 
     @Override
-    public Optional<RentalDTO> getRentalById(Long rental_id) {
-        Optional<Rental> rental = rentalRepository.findById(rental_id);
-        return rental.map(RentalDTO::fromEntity);
+    public Optional<Rental> getRentalById(Long rental_id) {
+        return rentalRepository.findById(rental_id);
     }
 
     @Override
-    public Optional<RentalDTO> createRental(RentalDTO rentalDTO, MultipartFile picture) throws IOException {
-
+    public Rental createRental(Rental rental, MultipartFile picture) throws IOException {
         String pictureUrl = processRentalPicture(picture, null);
 
-        Rental rental = RentalDTO.toEntity(rentalDTO);
         rental.setPicture(pictureUrl); // Set the picture URL after processing
 
-        Rental savedRental = rentalRepository.save(rental);
-        return Optional.ofNullable(RentalDTO.fromEntity(savedRental));
+        return rentalRepository.save(rental);
     }
 
     @Override
-    public Optional<RentalDTO> updateRental(Integer rental_id, RentalDTO rentalDTO, MultipartFile picture) throws IOException {
+    public Rental updateRental(Long rental_id, Rental rental, MultipartFile picture) throws IOException {
         // Récupérer l'entité existante
-        Optional<Rental> existingRentalOpt = rentalRepository.findById(rental_id.longValue());
+        Optional<Rental> existingRentalOpt = rentalRepository.findById(rental_id);
         if (existingRentalOpt.isEmpty()) {
             throw new IOException("The rental you are trying to modify does not exist");
         }
         Rental existingRental = existingRentalOpt.get();
 
-        // Mettre à jour les champs de l'entité avec les valeurs de rentalDTO
-        existingRental.setName(rentalDTO.getName());
-        existingRental.setSurface(rentalDTO.getSurface());
-        existingRental.setPrice(rentalDTO.getPrice());
-        existingRental.setDescription(rentalDTO.getDescription());
+        // Mettre à jour les champs de l'entité avec les valeurs de l'objet Rental
+        existingRental.setName(rental.getName());
+        existingRental.setSurface(rental.getSurface());
+        existingRental.setPrice(rental.getPrice());
+        existingRental.setDescription(rental.getDescription());
         existingRental.setUpdated_at(LocalDateTime.now());
 
         // Traitement de l'image (voir fonction dédiée)
-        if(picture != null && !picture.isEmpty()) {
+        if (picture != null && !picture.isEmpty()) {
             String pictureUrl = processRentalPicture(picture, existingRental);
             existingRental.setPicture(pictureUrl);
         }
 
         // Enregistrer les modifications dans la base de données
-        Rental savedRental = rentalRepository.save(existingRental);
-        return Optional.ofNullable(RentalDTO.fromEntity(savedRental));
+        return rentalRepository.save(existingRental);
     }
 
     @Override
-    public void deleteRental(Integer rental_id) throws IOException {
+    public void deleteRental(Long rental_id) throws IOException {
         // Récupérer l'entité existante
-        Optional<Rental> existingRentalOpt = rentalRepository.findById(rental_id.longValue());
+        Optional<Rental> existingRentalOpt = rentalRepository.findById(rental_id);
         if (existingRentalOpt.isEmpty()) {
             throw new IOException("The rental you are trying to delete does not exist");
         }

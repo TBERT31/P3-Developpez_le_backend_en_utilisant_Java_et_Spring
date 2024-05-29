@@ -2,6 +2,7 @@ package com.chatop.backend.controller;
 
 import com.chatop.backend.dto.MessageDTO;
 import com.chatop.backend.dto.response.MessageResponse;
+import com.chatop.backend.entity.Message;
 import com.chatop.backend.service.MessageService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,9 +28,10 @@ public class MessageController {
     public ResponseEntity<MessageResponse> createMessage(
            @Valid @RequestBody MessageDTO messageDTO
     ) {
-        MessageResponse messageResponse = new MessageResponse();
+        Message message = MessageDTO.toEntity(messageDTO);
+        Optional<Message> createdMessage = messageService.createMessage(message);
 
-        Optional<MessageDTO> createdMessage = messageService.createMessage(messageDTO);
+        MessageResponse messageResponse = new MessageResponse();
         if (createdMessage.isPresent()) {
             messageResponse.setMessage("Message sent successfully");
             return ResponseEntity.ok(messageResponse);

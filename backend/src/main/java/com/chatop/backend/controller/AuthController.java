@@ -3,6 +3,7 @@ package com.chatop.backend.controller;
 import com.chatop.backend.dto.request.RegistrationRequest;
 import com.chatop.backend.dto.response.AuthResponse;
 import com.chatop.backend.dto.UserDTO;
+import com.chatop.backend.entity.User;
 import com.chatop.backend.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -73,10 +74,11 @@ public class AuthController {
         String jwt = token.substring(7);
         String email = jwtUtil.extractUsername(jwt);
 
-        Optional<UserDTO> userDTO = userService.getUserByEmail(email);
+        Optional<User> user = userService.getUserByEmail(email);
 
-        if (userDTO.isPresent()) {
-            return ResponseEntity.ok(userDTO);
+        if (user.isPresent()) {
+            UserDTO userDTO = UserDTO.fromEntity(user.get());
+            return ResponseEntity.ok(Optional.of(userDTO));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
