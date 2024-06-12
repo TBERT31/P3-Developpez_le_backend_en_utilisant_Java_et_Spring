@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RestController
@@ -29,6 +29,7 @@ public class MessageController {
            @Valid @RequestBody MessageDTO messageDTO
     ) {
         Message message = MessageDTO.toEntity(messageDTO);
+        message.setCreated_at(LocalDateTime.now());
         Optional<Message> createdMessage = messageService.createMessage(message);
 
         MessageResponse messageResponse = new MessageResponse();
