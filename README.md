@@ -19,7 +19,7 @@ The frontend of this project was generated with [Angular CLI](https://github.com
 2. **Go inside folder:**
 
     ```sh
-    cd backend
+    cd frontend
     ```
 
 3. **Install dependencies:**
